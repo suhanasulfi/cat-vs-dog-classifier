@@ -13,10 +13,17 @@ def predict_image(img):
     img_array = np.array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
     prediction = model.predict(img_array)
-    if prediction[0][0] > 0.5:
+
+    confidence = prediction[0][0]
+
+    if confidence > 0.95:
         return "Prediction: It's a Dog 🐶"
-    else:
+    elif confidence < 0.05:
         return "Prediction: It's a Cat 🐱"
+    else:
+        return "❌ This image doesn't appear to be a cat or a dog."
+
+
 
 interface = gr.Interface(
     fn=predict_image,
